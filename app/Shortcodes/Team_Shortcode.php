@@ -5,7 +5,6 @@ use AmagumoLabs\wprestapifilter\Helpers;
 
 class Team_Shortcode extends Plugin
 {
-
   public function __construct() {
 
     if ( ! shortcode_exists( 'team_search' ) ) {
@@ -361,46 +360,42 @@ class Team_Shortcode extends Plugin
     return $order;
   }
 
-  /**
-    * Registers the callback functions
-    *
-    * Note: If this Ajax call was intended to be available to those who are not
-    *    logged in, you would need to uncommend the 'wp_ajax_nopriv_clear_object_cache_ajax'
-    *    hook.
-    * @since 1.0.0
-    */
-    public function setup_ajax_handlers() {
-      // responsible for providing a response when a taxonomy value is clicked from the dropdown.
-      add_action( 'wp_ajax_nopriv_filter_team_by_taxonomy_ajax', array( $this, 'filter_team_by_taxonomy_ajax' )  );
-      add_action( 'wp_ajax_filter_team_by_taxonomy_ajax', array( $this, 'filter_team_by_taxonomy_ajax' ) );
+/**
+  * Registers the callback functions
+  *
+  * Note: If this Ajax call was intended to be available to those who are not
+  *    logged in, you would need to uncommend the 'wp_ajax_nopriv_clear_object_cache_ajax'
+  *    hook.
+  * @since 1.0.0
+  */
+  public function setup_ajax_handlers() {
+    // responsible for providing a response when a taxonomy value is clicked from the dropdown.
+    add_action( 'wp_ajax_nopriv_filter_team_by_taxonomy_ajax', array( $this, 'filter_team_by_taxonomy_ajax' )  );
+    add_action( 'wp_ajax_filter_team_by_taxonomy_ajax', array( $this, 'filter_team_by_taxonomy_ajax' ) );
+  }
+
+/**
+  * Ajax handler for 'filter_team_by_taxonomy_ajax' call.
+  * @since 1.0.0
+  */
+  public function filter_team_by_taxonomy_ajax() {
+    $result = [ 'success' => true ];
+    try {
+      // self::$cache->flush();
+    } catch ( Exception $e ) {
+      $result = [ 'success' => false, 'message' => $e->getMessage() ];
     }
+    echo json_encode( $result );
+    wp_die();
+  }
 
-  /**
-    * Ajax handler for 'filter_team_by_taxonomy_ajax' call.
-    * @since 1.0.0
-    */
-    public function filter_team_by_taxonomy_ajax() {
-
-      $result = [ 'success' => true ];
-
-      try {
-        // self::$cache->flush();
-      } catch ( Exception $e ) {
-        $result = [ 'success' => false, 'message' => $e->getMessage() ];
-      }
-
-      echo json_encode( $result );
-      wp_die();
-
-    }
-
-  /**
-   * A short code that renders Search Layout, if provided
-   *
-   * @param $atts array Shortcode Attributes
-   * @return string Output of shortcode
-   * @since 1.0.0
-   */
+/**
+  * A short code that renders Search Layout, if provided
+  *
+  * @param $atts array Shortcode Attributes
+  * @return string Output of shortcode
+  * @since 1.0.0
+  */
   public function team_search_shortcode( $atts ) {
     global $wp;
 
@@ -458,7 +453,7 @@ class Team_Shortcode extends Plugin
 
       $searchform = '<form data-rest-url="'.get_rest_url( null, 'wp/v2/' ).'" class="'.self::$textdomain.'-searchteam" method="get" id="'.self::$textdomain.'searchteam" action="' .home_url("/"). '">
       <label><span class="screen-reader-text">'.sprintf( __( '%s', self::$textdomain ), $atts[ 'placeholder' ] ).'</span><input type="search" class="search-field" placeholder="'.sprintf( __( '%s', self::$textdomain ), $atts[ 'placeholder' ] ).'" value="' . get_search_query() . '" name="a" title="'.sprintf( __( '%s', self::$textdomain ), $atts[ 'placeholder' ].":" ).'" /></label>
-      <button type="button" data-posttype="'.$atts[ 'posttype' ].'" class="'.self::$textdomain.'-submit"><span class="screen-reader-text">Search</span><svg class="mk-svg-icon" data-name="mk-icon-search" data-cacheid="icon-5dedcecf221b9" style=" height:25px; width: 23.214285714286px; " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1664 1792"><path d="M1152 832q0-185-131.5-316.5t-316.5-131.5-316.5 131.5-131.5 316.5 131.5 316.5 316.5 131.5 316.5-131.5 131.5-316.5zm512 832q0 52-38 90t-90 38q-54 0-90-38l-343-342q-179 124-399 124-143 0-273.5-55.5t-225-150-150-225-55.5-273.5 55.5-273.5 150-225 225-150 273.5-55.5 273.5 55.5 225 150 150 225 55.5 273.5q0 220-124 399l343 343q37 37 37 90z"></path></svg></button>
+      <button type="button" data-posttype="'.$atts[ 'posttype' ].'" data-type-filter="taxanomy" class="'.self::$textdomain.'-submit" data-taxonomy="'.$atts[ 'taxonomy' ].'" ><span class="screen-reader-text">Search</span><svg class="mk-svg-icon" data-name="mk-icon-search" data-cacheid="icon-5dedcecf221b9" style=" height:25px; width: 23.214285714286px; " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1664 1792"><path d="M1152 832q0-185-131.5-316.5t-316.5-131.5-316.5 131.5-131.5 316.5 131.5 316.5 316.5 131.5 316.5-131.5 131.5-316.5zm512 832q0 52-38 90t-90 38q-54 0-90-38l-343-342q-179 124-399 124-143 0-273.5-55.5t-225-150-150-225-55.5-273.5 55.5-273.5 150-225 225-150 273.5-55.5 273.5 55.5 225 150 150 225 55.5 273.5q0 220-124 399l343 343q37 37 37 90z"></path></svg></button>
       </form>';
 
       $html = "";
@@ -475,8 +470,7 @@ class Team_Shortcode extends Plugin
           $term_options .= '<option value="'.$term_child->slug.'" class="'.self::$textdomain.'-dropdown__list-item">'.$term_child->name.'</option>';
         }
 
-        $html .= '<div class="'.self::$textdomain.'-dropdown-wrapper"><select id="'.self::$textdomain.'-select-'.$atts[ 'posttype' ].'-'.$atts[ 'taxonomy' ].'-'.$term->slug.'" data-id="'.self::$textdomain.'-select-'.$atts[ 'posttype' ].'-'.$atts[ 'taxonomy' ].'-'.$term->term_id.'" class="'.self::$textdomain.'-select-dropdown '.$atts[ 'posttype' ].'" data-label="'.sprintf( __( '%s', self::$textdomain ), $term->name ).'" data-posttype="'.$atts[ 'posttype' ].'" data-taxonomy="'.$atts[ 'taxonomy' ].'" data-term="'.$term->slug.'">'.$term_options.'</select></div>';
-
+        $html .= '<div class="'.self::$textdomain.'-dropdown-wrapper"><select id="'.self::$textdomain.'-select-'.$atts[ 'posttype' ].'-'.$atts[ 'taxonomy' ].'-'.$term->slug.'" data-id="'.self::$textdomain.'-select-'.$atts[ 'posttype' ].'-'.$atts[ 'taxonomy' ].'-'.$term->term_id.'" class="'.self::$textdomain.'-select-dropdown '.$atts[ 'posttype' ].'" data-label="'.sprintf( __( '%s', self::$textdomain ), $term->name ).'" data-posttype="'.$atts[ 'posttype' ].'" data-taxonomy="'.$atts[ 'taxonomy' ].'" data-type-filter="taxanomy" data-term="'.$term->slug.'">'.$term_options.'</select></div>';
       }
 
       $html .= '<a class="'.self::$textdomain.'-dropdown-reset"  href="#" data-posttype="'.$atts[ 'posttype' ].'" data-taxonomy="'.$atts[ 'taxonomy' ].'" >'.check_current_language('Reset Filter', 'Thiết lập lại').'</a>';

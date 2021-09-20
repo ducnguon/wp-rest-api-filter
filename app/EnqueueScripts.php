@@ -18,7 +18,7 @@ class EnqueueScripts extends Plugin {
     public function enqueue_frontend_scripts() {
 
         // Enqueue script dependencies
-        //$this->enqueue_common_scripts();
+        $this->enqueue_common_scripts();
 
         // Enqueuing custom CSS for child theme (Twentysixteen was used for testing)
         wp_enqueue_style( 'wprestapifilter', Helpers::get_script_url( 'assets/css/wprestapifilter.css' ), null, Helpers::get_script_version( 'assets/css/wprestapifilter.css' ) );
@@ -37,6 +37,11 @@ class EnqueueScripts extends Plugin {
     private function enqueue_common_scripts() {
 
         // Enqueue common (frontend/backend) JavaScript
+
+        // Enqueue flatpickr CSS
+        wp_enqueue_style( 'flatpickr-css', 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css', null, "4.0.0" );
+        // Enqueue flatpickr JavaScript
+        wp_enqueue_script( 'flatpickr-js', 'https://cdn.jsdelivr.net/npm/flatpickr', array( 'jquery' ), "4.0.0", true );
 
     }
 
