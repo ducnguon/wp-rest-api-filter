@@ -3,6 +3,7 @@
  */
 
 import useDropdown from './components/useDropdown'
+import useDatePicker from './components/useDatePicker'
 import { PREFIX } from './config'
 
 var WRAF_NS = WRAF_NS || {}
@@ -47,6 +48,7 @@ var WRAF_NS = WRAF_NS || {}
         }
       }
       useDropdown.resetDropdown()
+      useDatePicker.useDatePicker()
     },
   }
 
