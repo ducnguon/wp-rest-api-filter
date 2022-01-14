@@ -148,7 +148,9 @@ class Post_Shortcode extends Plugin
 
       $preloader = '<div class="ball-pulse"><div style="background-color: #223c7e"></div><div style="background-color: #223c7e"></div><div style="background-color: #223c7e"></div></div>';
       $html = '<div class="wraf-wrapper">';
-      $searchform = '<form data-rest-url="'.get_rest_url( null, 'wp/v2/' ).'" class="'.self::$textdomain.'-searchteam posts" method="get" id="'.self::$textdomain.'searchteam" action="' .home_url("/"). '">
+
+      $searchform .= '<form data-rest-url="'.get_rest_url( null, 'wp/v2/' ).'" class="'.self::$textdomain.'-searchteam posts" method="get" id="'.self::$textdomain.'searchteam" action="' .home_url("/"). '">
+
       <label><span class="screen-reader-text">'.sprintf( __( '%s', self::$textdomain ), $atts[ 'placeholder' ] ).'</span><input type="search" class="search-field" placeholder="'.sprintf( __( '%s', self::$textdomain ), $atts[ 'placeholder' ] ).'" value="' . get_search_query() . '" name="a" title="'.sprintf( __( '%s', self::$textdomain ), $atts[ 'placeholder' ].":" ).'" /></label>
       <button type="button" data-posttype="'.$atts[ 'posttype' ].'" data-type-filter="meta" class="'.self::$textdomain.'-submit" data-taxonomy="'.$atts[ 'taxonomy' ].'" data-categories="'.$category_id.'" ><span class="screen-reader-text">Search</span><svg class="mk-svg-icon" data-name="mk-icon-search" data-cacheid="icon-5dedcecf221b9" style=" height:25px; width: 23.214285714286px; " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1664 1792"><path d="M1152 832q0-185-131.5-316.5t-316.5-131.5-316.5 131.5-131.5 316.5 131.5 316.5 316.5 131.5 316.5-131.5 131.5-316.5zm512 832q0 52-38 90t-90 38q-54 0-90-38l-343-342q-179 124-399 124-143 0-273.5-55.5t-225-150-150-225-55.5-273.5 55.5-273.5 150-225 225-150 273.5-55.5 273.5 55.5 225 150 150 225 55.5 273.5q0 220-124 399l343 343q37 37 37 90z"></path></svg></button>
       </form>';
@@ -163,9 +165,19 @@ class Post_Shortcode extends Plugin
         endforeach;
 
         $html .= '<div class="'.self::$textdomain.'-dropdown-wrapper"><select id="'.self::$textdomain.'-select-'.$atts[ 'posttype' ].'-'.$term.'" data-categories="'.$category_id.'" data-id="'.self::$textdomain.'-select-'.$atts[ 'posttype' ].'-'.$term.'" data-label="'.sprintf( __( '%s', self::$textdomain ), $options['label'] ).'" class="'.self::$textdomain.'-select-dropdown '.$atts[ 'posttype' ].'" data-type-filter="meta" data-posttype="'.$atts[ 'posttype' ].'" data-taxonomy="" data-term="'.$term.'">'.$term_options.'</select></div>';
+
       }
 
-      $html .= '<label class="'.self::$textdomain.'-label" >'.check_current_language('Date', 'Ngày').'</label><input class="'.self::$textdomain.'-datepicker" data-posttype="'.$atts[ 'posttype' ].'" data-type-filter="meta" type="text" placeholder="'.check_current_language('Select Date..', 'Chọn ngày').'">';
+  
+
+
+        // echo '<pre>';
+        // var_dump($options);
+        // echo '</pre>';
+        // die();
+      }
+
+      $html .= '<label class="'.self::$textdomain.'-label" >'.check_current_language('Date', 'Ngày').'</label><input class="'.self::$textdomain.'-datepicker" data-posttype="'.$atts[ 'posttype' ].'" data-type-filter="meta" type="text" placeholder="Select Date..">';
 
       $html .= '<a class="'.self::$textdomain.'-dropdown-reset '.$atts[ 'posttype' ].'"  href="#" data-posttype="'.$atts[ 'posttype' ].'" data-taxonomy="'.$atts[ 'taxonomy' ].'" >'.check_current_language('Reset Filter', 'Thiết lập lại').'</a>';
       $html .= "</div>";

@@ -74,7 +74,7 @@ const renderFilterResult = (response) => {
       }
     } else {
       let output =
-        '<h2>' +
+  '<h2>' +
         resultLabel +
         '</h2><div class=""><ul class="mk-blog-container mk-thumbnail-wrapper   jupiter-donut- mag-one-column">'
       $j.each(response, function (index, object) {

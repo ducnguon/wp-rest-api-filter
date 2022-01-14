@@ -7,16 +7,11 @@ const renderFilterResult = (response) => {
   let resultFilter = document.getElementById(
     PREFIX + '-result-' + POST_TYPE + '-' + TERM
   )
-  const resultLabel = document.getElementsByClassName('wraf-result-wrapper')[0]
+const resultLabel = document.getElementsByClassName('wraf-result-wrapper')[0]
     ? document
         .getElementsByClassName('wraf-result-wrapper')[0]
         .getAttribute('data-label')
     : 'Search results'
-  if (response) {
-    response.sort(function (a, b) {
-      return a.employees_order - b.employees_order
-    })
-    var output =
       '<h2>' +
       resultLabel +
       '</h2><div class="mk-employees jupiter-donut-margin-bottom-10 jupiter-donut-margin-top-10 three-column u6col u5col u4col o0col o1col o2col simple c_cs  jupiter-donut-"><ul>'
